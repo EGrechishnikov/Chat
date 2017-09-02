@@ -1,0 +1,62 @@
+#messages {
+    border: 1px black solid;
+    width: 400px;
+    height: 400px;
+    margin: auto;
+    overflow-y: auto;
+}
+
+#sendButton {
+    margin-top: 10px;
+    height: 40px;
+    width: 100px;
+}
+
+#input {
+    margin-top: 30px;
+    width: 400px;
+    height: 50px;
+    border: 1px black solid;
+    resize: none;
+}
+
+header {
+    font-size: 25px;
+}
+
+#chat, header {
+    text-align: center;
+}
+
+.myMessage {
+    text-align: right;
+    background-color: #d8e3ff;
+}
+
+.friendMessages {
+    text-align: left;
+    background-color: #9eff69;
+}
+
+.message {
+    margin: 0px 10px;
+    padding: 8px 8px 8px 18px;
+    border-radius: 5px;
+    word-break: break-all;
+}
+
+.text {
+    font-size: 20px;
+    font-family: sans-serif;
+}
+
+#chat {
+    margin-top: 20px;
+}
+
+.date {
+    font-size: 13px;
+    background-color: white;
+    padding: 0px 10px;
+    margin-bottom: 2px;
+}
