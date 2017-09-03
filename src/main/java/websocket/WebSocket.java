@@ -6,6 +6,10 @@ import javax.websocket.OnMessage;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+/**
+ * WebSocket for transfer message beans between server and
+ * client side.
+ */
 @ServerEndpoint("/connect")
 public class WebSocket {
     private static Logger logger = Logger.getLogger(WebSocket.class);
@@ -14,11 +18,9 @@ public class WebSocket {
     @OnMessage
     public void onMessage(String message, Session session) {
         try {
-            if(message.equals(LOAD_COMMAND)) {
-                logger.info(LOAD_COMMAND);
+            if (message.equals(LOAD_COMMAND)) {
                 getAllMessages(session);
             } else {
-                logger.info("SIMMPLE MESSAGE");
                 session.getBasicRemote().sendText(message);
             }
         } catch (Exception e) {
@@ -27,28 +29,26 @@ public class WebSocket {
     }
 
     private void getAllMessages(Session session) throws Exception {
-        logger.info("GET ALL");
-        String[] arr = {"1", "2", "3"};
-        logger.info("SENDING ARRAY");
-        for(int i=0; i<arr.length; i++) {
+        String[] arr = {"История", "сообщений", "чата"};
+        for (int i = 0; i < arr.length; i++) {
             session.getBasicRemote().sendText(arr[i]);
         }
         startReadAndPassMessages(session);
     }
 
     private void startReadAndPassMessages(final Session session) {
-        new Thread(){
+        new Thread() {
             public void run() {
-                    try {
-                        while (true) {
-                            session.getBasicRemote().sendText("TEST");
-                            logger.info("SEND TMP MESSAGE");
-                            Thread.sleep(5000);
-                        }
-                    } catch (Exception e) {
-                        logger.error(e);
+                try {
+                    while (true) {
+                        session.getBasicRemote().sendText("TEST");
+                        logger.info("SEND TMP MESSAGE");
+                        Thread.sleep(5000);
                     }
-                    logger.info("END SENDING TMP MESSAGE");
+                } catch (Exception e) {
+                    logger.error(e);
+                }
+                logger.info("END SENDING TMP MESSAGE");
             }
         }.start();
     }

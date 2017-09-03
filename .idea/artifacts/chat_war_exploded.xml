@@ -7,8 +7,8 @@
           <element id="module-output" name="chat" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:5.2.6.FINAL" />
           <element id="library" level="project" name="Maven: log4j:log4j:1.2.17" />
+          <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.38" />
         </element>
       </element>
       <element id="directory" name="META-INF">

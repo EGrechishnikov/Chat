@@ -15,15 +15,14 @@ document.onkeyup = function (event) {
 
 //обработка ответа от сервера
 socket.onmessage = function (message) {
-    printMessage(new Message(message.data, false, new Date));
+    printMessage(new Message(message.data, false));
 };
 
 //отправить сообщение
 function sendMessage() {
-    var date = new Date;
     var message = document.getElementById("input").value;
     if (message.length > 0) {
-        printMessage(new Message(message, true, date));
+        printMessage(new Message(message, true));
         document.getElementById("input").value = "";
         socket.send(message);
     }
@@ -40,10 +39,10 @@ function loadMessages() {
 }
 
 //конструктор сообщения
-function Message(text, isMessageMy, date) {
+function Message(text, isMessageMy) {
     this.toString = function () {
         var newMessage = messageHTML.replace("#", text);
-        newMessage = newMessage.replace("@", date.toLocaleString("ru"));
+        newMessage = newMessage.replace("@", new Date.toLocaleString("ru"));
         return newMessage.split("*").join(isMessageMy ? "myMessage" : "friendsMessage");
     };
 }
