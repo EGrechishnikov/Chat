@@ -42,7 +42,8 @@ function loadMessages() {
 function Message(text, isMessageMy) {
     this.toString = function () {
         var newMessage = messageHTML.replace("#", text);
-        newMessage = newMessage.replace("@", new Date.toLocaleString("ru"));
+        var date = new Date;
+        newMessage = newMessage.replace("@", date.toLocaleString("ru"));
         return newMessage.split("*").join(isMessageMy ? "myMessage" : "friendsMessage");
     };
 }

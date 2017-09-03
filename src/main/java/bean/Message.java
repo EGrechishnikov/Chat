@@ -16,6 +16,11 @@ public class Message implements Serializable {
         this.text = text;
     }
 
+    public Message(int id, String text) {
+        this.id = id;
+        this.text = text;
+    }
+
     public int getId() {
         return id;
     }
