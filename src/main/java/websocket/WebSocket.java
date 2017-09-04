@@ -7,8 +7,8 @@ import org.apache.log4j.Logger;
 import javax.websocket.OnMessage;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * WebSocket for transfer message beans between server and
@@ -18,15 +18,18 @@ import java.util.List;
 public class WebSocket {
     private static Logger logger = Logger.getLogger(WebSocket.class);
     private final static String LOAD_COMMAND = "***LOAD#MESSAGES***";
+    //Id последнего полученного сообщения
     private int lastMessageId;
     private MessageDAO dao = new MessageDAO();
-    private List<Integer> myMessagesId = new ArrayList<Integer>();
+    //Ids моих сообщений
+    private List<Integer> myMessagesId = new CopyOnWriteArrayList<Integer>();
 
     @OnMessage
     public void onMessage(String message, Session session) {
         try {
             if (message.equals(LOAD_COMMAND)) {
                 getAllMessages(session);
+                startReadAndPassMessages(session);
             } else {
                 int id = dao.save(message);
                 myMessagesId.add(id);
@@ -39,12 +42,11 @@ public class WebSocket {
 
     private void getAllMessages(Session session) throws Exception {
         logger.info("get all messages");
-        List<Message> list = dao.getAllWithoutMyMessages(myMessagesId);
+        List<Message> list = dao.getAllWithoutMyMessages(myMessagesId, lastMessageId);
         for (Message message : list) {
             session.getBasicRemote().sendText(message.getText());
             lastMessageId = message.getId();
         }
-        startReadAndPassMessages(session);
     }
 
     private void startReadAndPassMessages(final Session session) {
@@ -52,12 +54,12 @@ public class WebSocket {
             public void run() {
                 try {
                     while (true) {
-                        List<Message> list = dao.getAllWithoutMyMessages(myMessagesId);
-                        for(Message message : list) {
+                        List<Message> list = dao.getAllWithoutMyMessages(myMessagesId, lastMessageId);
+                        for (Message message : list) {
                             session.getBasicRemote().sendText(message.getText());
                             lastMessageId = message.getId();
                         }
-                        Thread.sleep(5000);
+                        Thread.sleep(4000);
                     }
                 } catch (Exception e) {
                     logger.error("start read error");

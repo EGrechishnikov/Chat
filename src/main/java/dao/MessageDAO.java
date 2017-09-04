@@ -25,7 +25,12 @@ public class MessageDAO {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, message);
             statement.execute();
-            //TODO дописать реализацию. Вернуть id сообщения. Использовать getLastId() для сравнения
+            sql = "select max(id) from message where text = ?";
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, message);
+            ResultSet set = statement.executeQuery();
+            set.next();
+            id = set.getInt(1);
         } catch (SQLException e) {
             logger.error("save error");
             logger.error(e);
@@ -33,14 +38,34 @@ public class MessageDAO {
         return id;
     }
 
-    public List<Message> getAllWithoutMyMessages(List<Integer> myMessagesId) {
+    public Message getMessageById(int id) {
+        Message message = null;
+        try {
+            String sql = "select * from message where id = ?";
+            PreparedStatement statement =  connection.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet set = statement.executeQuery();
+            set.next();
+            message = new Message(set.getInt(1), set.getString(2));
+        } catch (SQLException e) {
+            logger.error("get all error");
+            logger.error(e);
+        }
+        return message;
+    }
+
+    public List<Message> getAllWithoutMyMessages(List<Integer> myMessagesId, int lastMessagesId) {
         List<Message> messages = new ArrayList<Message>();
         try {
-            String sql = "select * from message";
-            ResultSet set = connection.prepareStatement(sql).executeQuery();
+            String sql = "select * from message where id > ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, lastMessagesId);
+            ResultSet set = statement.executeQuery();
             while(set.next()) {
-                messages.add(new Message(set.getInt(1),
-                        set.getString(2)));
+                if(!myMessagesId.contains(set.getInt(1))) {
+                    messages.add(new Message(set.getInt(1),
+                            set.getString(2)));
+                }
             }
         } catch (SQLException e) {
             logger.error("get all error");
