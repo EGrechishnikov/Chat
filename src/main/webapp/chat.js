@@ -14,22 +14,26 @@ document.onkeyup = function (event) {
 };
 
 //обработка ответа от сервера
-socket.onmessage = function (message) {
-    printMessage(new Message(message.data, false));
+socket.onmessage = function (event) {
+    var json = JSON.parse(event.data);
+    var message = new Message(json.text, json.sender, json.date);
+    printMessage(message);
 };
 
 //отправить сообщение
 function sendMessage() {
-    var message = document.getElementById("input").value;
-    if (message.length > 0) {
-        printMessage(new Message(message, true));
+    var text = document.getElementById("input").value;
+    if (text.length > 0) {
+        var message = new Message(text, "test", new Date);
+        printMessage(message);
         document.getElementById("input").value = "";
-        socket.send(message);
+        socket.send(JSON.stringify(message));
     }
 }
 
 //вывод сообщения
 function printMessage(message) {
+    console.log(message.toString());
     document.getElementById("messages").innerHTML += message.toString();
 }
 
@@ -39,11 +43,13 @@ function loadMessages() {
 }
 
 //конструктор сообщения
-function Message(text, isMessageMy) {
+function Message(text, sender, date) {
+    this.text = text;
+    this.sender = sender;
+    this.date = date;
     this.toString = function () {
-        var newMessage = messageHTML.replace("#", text);
-        var date = new Date;
-        newMessage = newMessage.replace("@", date.toLocaleString("ru"));
-        return newMessage.split("*").join(isMessageMy ? "myMessage" : "friendsMessage");
+        var newMessage = messageHTML.replace("#", this.text);
+        newMessage = newMessage.replace("@", this.date.toLocaleString("ru"));
+        return newMessage.split("*").join(false ? "myMessage" : "friendsMessage");
     };
 }

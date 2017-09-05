@@ -18,16 +18,19 @@ public class MessageDAO {
     private static Logger logger = Logger.getLogger(MessageDAO.class);
     private Connection connection = JDBCConnection.getConnection();
 
-    public int save(String message) {
+    public int save(Message message) {
         int id = 0;
         try {
-            String sql = "insert into message (text) values (?)";
+            String sql = "insert into message (text, sender, date) values (?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, message);
+            statement.setString(1, message.getText());
+            statement.setString(2, message.getSender());
+            statement.setTimestamp(3, message.getDate());
             statement.execute();
-            sql = "select max(id) from message where text = ?";
+            sql = "select max(id) from message where text = ? and sender = ?";
             statement = connection.prepareStatement(sql);
-            statement.setString(1, message);
+            statement.setString(1, message.getText());
+            statement.setString(2, message.getSender());
             ResultSet set = statement.executeQuery();
             set.next();
             id = set.getInt(1);
@@ -47,8 +50,9 @@ public class MessageDAO {
             ResultSet set = statement.executeQuery();
             while(set.next()) {
                 if(!myMessagesId.contains(set.getInt(1))) {
-                    messages.add(new Message(set.getInt(1),
-                            set.getString(2)));
+                    Message message = new Message(set.getInt(1), set.getString(2),
+                            set.getString(3), set.getTimestamp(4));
+                    messages.add(message);
                 }
             }
         } catch (SQLException e) {

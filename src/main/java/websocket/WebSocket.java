@@ -1,6 +1,7 @@
 package websocket;
 
 import bean.Message;
+import com.google.gson.Gson;
 import dao.MessageDAO;
 import org.apache.log4j.Logger;
 
@@ -20,9 +21,10 @@ public class WebSocket {
     private final static String LOAD_COMMAND = "***LOAD#MESSAGES***";
     //Id последнего полученного сообщения
     private int lastMessageId;
-    private MessageDAO dao = new MessageDAO();
+    private static MessageDAO dao = new MessageDAO();
     //Ids моих сообщений
     private List<Integer> myMessagesId = new CopyOnWriteArrayList<Integer>();
+    private static Gson gson = new Gson();
 
     @OnMessage
     public void onMessage(String message, Session session) {
@@ -31,7 +33,7 @@ public class WebSocket {
                 getAllMessages(session);
                 startReadAndPassMessages(session);
             } else {
-                int id = dao.save(message);
+                int id = dao.save(gson.fromJson(message, Message.class));
                 myMessagesId.add(id);
             }
         } catch (Exception e) {
@@ -44,7 +46,7 @@ public class WebSocket {
         logger.info("get all messages");
         List<Message> list = dao.getAllWithoutMyMessages(myMessagesId, lastMessageId);
         for (Message message : list) {
-            session.getBasicRemote().sendText(message.getText());
+            session.getBasicRemote().sendText(gson.toJson(message));
             lastMessageId = message.getId();
         }
     }
@@ -56,7 +58,7 @@ public class WebSocket {
                     while (true) {
                         List<Message> list = dao.getAllWithoutMyMessages(myMessagesId, lastMessageId);
                         for (Message message : list) {
-                            session.getBasicRemote().sendText(message.getText());
+                            session.getBasicRemote().sendText(gson.toJson(message));
                             lastMessageId = message.getId();
                         }
                         Thread.sleep(4000);
