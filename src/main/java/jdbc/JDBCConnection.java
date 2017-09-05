@@ -11,14 +11,16 @@ import java.sql.SQLException;
  */
 public class JDBCConnection {
     private static Connection connection;
-    private static final String url = "jdbc:mysql://127.0.0.1:3306/chat?useUnicode=true&characterEncoding=utf8";
+    private static final String url = "jdbc:mysql://localhost:3306/chat?useUnicode=true&characterEncoding=utf8";
     private static final String login = "root";
     private static final String password = "";
     private static Logger logger = Logger.getLogger(JDBCConnection.class);
 
     public static Connection getConnection() {
         try {
+            logger.info("Get connection");
             if (connection == null) {
+                logger.info("Create connection");
                 Class.forName("com.mysql.jdbc.Driver");
                 connection = DriverManager.getConnection(url, login, password);
             }
@@ -27,13 +29,5 @@ public class JDBCConnection {
             logger.error(e);
         }
         return connection;
-    }
-
-    public void close() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            logger.error(e);
-        }
     }
 }

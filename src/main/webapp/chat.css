@@ -4,6 +4,7 @@
     height: 400px;
     margin: auto;
     overflow-y: auto;
+    margin-top: 30px;
 }
 
 #sendButton {
@@ -21,11 +22,7 @@
 }
 
 header {
-    font-size: 25px;
-}
-
-#chat, header {
-    text-align: center;
+    font-size: 23px;
 }
 
 .myMessage {
@@ -51,7 +48,8 @@ header {
 }
 
 #chat {
-    margin-top: 20px;
+    text-align: center;
+    margin-top: 30px;
 }
 
 .date {

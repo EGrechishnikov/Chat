@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class MessageDAO {
     private static Logger logger = Logger.getLogger(MessageDAO.class);
-    private Connection connection = connection = JDBCConnection.getConnection();
+    private Connection connection = JDBCConnection.getConnection();
 
     public int save(String message) {
         int id = 0;
@@ -38,22 +38,6 @@ public class MessageDAO {
         return id;
     }
 
-    public Message getMessageById(int id) {
-        Message message = null;
-        try {
-            String sql = "select * from message where id = ?";
-            PreparedStatement statement =  connection.prepareStatement(sql);
-            statement.setInt(1, id);
-            ResultSet set = statement.executeQuery();
-            set.next();
-            message = new Message(set.getInt(1), set.getString(2));
-        } catch (SQLException e) {
-            logger.error("get all error");
-            logger.error(e);
-        }
-        return message;
-    }
-
     public List<Message> getAllWithoutMyMessages(List<Integer> myMessagesId, int lastMessagesId) {
         List<Message> messages = new ArrayList<Message>();
         try {
@@ -72,19 +56,5 @@ public class MessageDAO {
             logger.error(e);
         }
         return messages;
-    }
-
-    public int getLastId() {
-        int lastId = 0;
-        try {
-            String sql = "select max(id) from message";
-            ResultSet set = connection.prepareStatement(sql).executeQuery();
-            set.next();
-            lastId = set.getInt(1);
-        } catch (SQLException e) {
-            logger.error("get last id error");
-            logger.error(e);
-        }
-        return lastId;
     }
 }
