@@ -54,7 +54,33 @@ header {
 
 .date {
     font-size: 13px;
-    background-color: white;
+}
+
+.userName {
+    font-size: 20px;
+}
+
+.wrapper {
     padding: 0px 10px;
     margin-bottom: 2px;
+    background-color: white;
+}
+
+#userName {
+    font-size: 35px;
+    width: 40%;
+    vertical-align: middle;
+}
+
+#loginButton {
+    width: 7%;
+    font-size: 22px;
+    height: 46px;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+#login {
+    margin-top: 19%;
+    text-align: center;
 }
