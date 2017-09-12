@@ -10,15 +10,15 @@
 <header>By Evgeniy Grechishnikov</header>
 <hr>
 <div id="login">
-    <form>
+    <form onsubmit="startChat();return false;">
         <input id="userName" type="text" placeholder="Введите имя" autofocus/>
-        <button id="loginButton" type="submit" onclick="startChat(); return false;">Войти</button>
+        <button id="loginButton" type="button" onclick="startChat(); return false;">Войти</button>
     </form>
 </div>
-<div id="chat">
+<div id="chat" class="hide">
     <h2>Чат</h2>
     <div id="messages"></div>
-    <textarea id="input" class="text"></textarea>
+    <textarea id="input" class="text" placeholder="Введите сообщение"></textarea>
     <br>
     <button type="button" id="sendButton" onclick="sendMessage()">Отправить</button>
 </div>

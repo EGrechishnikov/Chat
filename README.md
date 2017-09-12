@@ -5,4 +5,4 @@ show you their depending on your user name that you had entered in main page.
 The chat based on WebSocket and Java. It's very simple and very small app. It hasn't a big framework like Spring or Hibernate. 
 Even Servlet. Only WebSocket and JDBC.
 But it's possible to expand in the future. Maybe  create more beans, add Hibernate and connection pool. 
-Also create chat per 2 persons (private).
+Also create chat per 2 persons (private)...

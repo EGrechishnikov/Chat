@@ -1,6 +1,6 @@
 var messageHTML = "<div class='wrapper *'><span class='date'>@ от </span>" +
     "<span class='userName'>?</span></div><div class='message text *'>#</div>";
-var socket = new WebSocket("ws://192.168.1.10:8080/chat/connect");
+var socket = new WebSocket("ws://localhost:8080/chat/connect");
 const LOAD_MESSAGES_COMMAND = "***LOAD#MESSAGES***";
 var userName = "";
 
@@ -16,12 +16,22 @@ function start() {
 function startChat() {
     userName = document.getElementById("userName").value;
     if(userName.length !== 0) {
-        document.getElementById("login").style.display = "none";
-        document.getElementById("userName").removeAttribute("autofocus");
-        document.getElementById("chat").style.display = "block";
-        document.getElementById("input").setAttribute("autofocus", "");
+        changeContent();
         loadMessages();
     }
+}
+
+function changeContent() {
+    document.getElementById("login").classList.add("hide");
+    setTimeout(function() {
+        document.getElementById("login").style.display = "none";
+        document.getElementById("chat").style.display = "block";
+    }, 1000);
+    document.getElementById("userName").focus();
+    setTimeout(function() {
+        document.getElementById("chat").classList.add("show");
+        document.getElementById("input").focus();
+    },1200);
 }
 
 //отправка сообщения по нажатию ENTER
