@@ -71,6 +71,7 @@ socket.onmessage = function (event) {
     }
 };
 
+//Отображение количество пользователей онлайн
 function changeOnlineUsersCount(count) {
     var text = "Сейчас здесь ";
     if(count == 0) {
@@ -85,13 +86,28 @@ function changeOnlineUsersCount(count) {
     document.getElementById("usersCount").innerText = text;
 }
 
-//Прокрутка чата к последнему сообщению
+//Плавная прокрутка чата к последнему сообщению.
+//Скорость меняется в зависимости от длинны прокрутки.
 function scrollMessages() {
     var height = document.getElementById("messages").scrollHeight;
     var currentPosition = document.getElementById("messages").scrollTop;
-    if(height - messagesBlockHeight > currentPosition) {
-        document.getElementById("messages").scrollTop = currentPosition + 1;
-        setTimeout(scrollMessages, 10);
+    var diff = height - messagesBlockHeight - currentPosition;
+    if(diff > 0) {
+        if(diff > 1000) {
+            currentPosition += 5;
+        } else if(diff > 800) {
+            currentPosition += 4;
+        } else if(diff > 500) {
+            currentPosition += 3;
+        } else if(diff > 300) {
+            currentPosition += 2;
+        } else if(diff > 200) {
+            currentPosition += 1.5;
+        } else {
+            currentPosition += 1;
+        }
+        document.getElementById("messages").scrollTop = currentPosition;
+        setTimeout(scrollMessages, 4);
     }
 }
 
