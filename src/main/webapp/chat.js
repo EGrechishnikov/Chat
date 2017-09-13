@@ -56,16 +56,34 @@ document.onkeyup = function (event) {
 
 //Обработка ответа от сервера
 socket.onmessage = function (event) {
-    var json = JSON.parse(event.data, function (key, value) {
-        if (key === "date") {
-            return new Date(value);
-        }
-        return value;
-    });
-    var message = new Message(json.text, json.sender, json.date);
-    printMessage(message);
-    scrollMessages();
+    if(event.data.indexOf("Users count:") === 0) {
+        changeOnlineUsersCount(event.data.substr(12));
+    } else {
+        var json = JSON.parse(event.data, function (key, value) {
+            if (key === "date") {
+                return new Date(value);
+            }
+            return value;
+        });
+        var message = new Message(json.text, json.sender, json.date);
+        printMessage(message);
+        scrollMessages();
+    }
 };
+
+function changeOnlineUsersCount(count) {
+    var text = "Сейчас здесь ";
+    if(count == 0) {
+        text += ("никого нет.");
+    } else if(count == 1) {
+        text += ("только вы :)");
+    } else if(count > 1 && count < 5) {
+        text += (count + " пользователя.")
+    } else {
+        text += (count + " пользователей.")
+    }
+    document.getElementById("usersCount").innerText = text;
+}
 
 //Прокрутка чата к последнему сообщению
 function scrollMessages() {

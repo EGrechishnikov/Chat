@@ -142,3 +142,10 @@ header {
     opacity: 1;
     transition: opacity 2s;
 }
+
+#usersCount {
+    font-size: 17px;
+    position: fixed;
+    bottom: 10px;
+    margin-left: 20px;
+}

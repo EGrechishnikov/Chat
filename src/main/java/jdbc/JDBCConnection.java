@@ -18,7 +18,6 @@ public class JDBCConnection {
 
     public static Connection getConnection() {
         try {
-            logger.info("Get connection");
             if (connection == null) {
                 logger.info("Create connection");
                 Class.forName("com.mysql.jdbc.Driver");
@@ -29,5 +28,15 @@ public class JDBCConnection {
             logger.error(e);
         }
         return connection;
+    }
+
+    public static void close() {
+        try {
+            getConnection().close();
+            logger.info("DB connection closed");
+        } catch (SQLException e) {
+            logger.error("Close connection exception");
+            logger.error(e);
+        }
     }
 }

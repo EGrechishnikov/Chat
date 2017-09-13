@@ -3,6 +3,7 @@ package websocket;
 import bean.Message;
 import com.google.gson.Gson;
 import dao.MessageDAO;
+import jdbc.JDBCConnection;
 import org.apache.log4j.Logger;
 
 import javax.websocket.OnMessage;
@@ -10,6 +11,7 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * WebSocket for transfer message beans between server and
@@ -27,6 +29,7 @@ public class WebSocket {
     private List<Integer> myMessagesId = new CopyOnWriteArrayList<Integer>();
     private static Gson gson = new Gson();
     private volatile boolean chatStopped = false;
+    private static volatile AtomicInteger currentOnlineUsersCount = new AtomicInteger(0);
 
     @OnMessage
     public void onMessage(String message, Session session) {
@@ -34,6 +37,8 @@ public class WebSocket {
             if (message.equals(LOAD_COMMAND)) {
                 getAllMessages(session);
                 startReadAndPassMessages(session);
+                currentOnlineUsersCount.incrementAndGet();
+                logger.info("Current users count: " + currentOnlineUsersCount.get());
             } else if(message.equals(STOP_COMMAND)) {
                 chatStopped = true;
             } else {
@@ -66,13 +71,17 @@ public class WebSocket {
                             session.getBasicRemote().sendText(gson.toJson(message));
                             lastMessageId = message.getId();
                         }
+                        session.getBasicRemote().sendText("Users count:" + currentOnlineUsersCount.get());
                         Thread.sleep(4000);
                     }
                 } catch (Exception e) {
                     logger.error("WebSocket Exception: start read messages error");
                     logger.error(e);
                 } finally {
+                    JDBCConnection.close();
+                    currentOnlineUsersCount.decrementAndGet();
                     logger.info("WebSocket: stop read messages");
+                    logger.info("Current users count: " + currentOnlineUsersCount.get());
                 }
             }
         };
