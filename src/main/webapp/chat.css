@@ -4,6 +4,29 @@ body {
     font-weight: bold;
 }
 
+#messages::-webkit-scrollbar-track, #input::-webkit-scrollbar-track{
+    border-radius: 10px;
+}
+
+#messages::-webkit-scrollbar, #input::-webkit-scrollbar{
+    width: 8px;
+}
+
+#messages::-webkit-scrollbar-corner, #input::-webkit-scrollbar-corner {
+    background: rgba(0,0,0,0.5);
+}
+
+#messages::-webkit-scrollbar-thumb {
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    background-color: #555;
+}
+
+#input::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #555;
+}
+
 button {
     background-color: #555555;
     border: none;
@@ -13,10 +36,10 @@ button {
 
 #messages {
     border: 2px #555555 solid;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
     width: 400px;
-    height: 400px;
+    height: 410px;
     margin: auto;
     overflow-y: auto;
     margin-top: 25px;
@@ -34,8 +57,8 @@ button {
     width: 380px;
     height: 53px;
     border: 2px #555555 solid;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
     resize: none;
     padding: 10px;
     padding-top: 8px;
@@ -74,7 +97,7 @@ header {
 
 #chat {
     text-align: center;
-    margin-top: 25px;
+    margin-top: 20px;
 }
 
 .date {

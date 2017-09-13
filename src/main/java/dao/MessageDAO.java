@@ -35,7 +35,7 @@ public class MessageDAO {
             set.next();
             id = set.getInt(1);
         } catch (SQLException e) {
-            logger.error("save error");
+            logger.error("MessageDAO Exception: save error");
             logger.error(e);
         }
         return id;
@@ -56,7 +56,7 @@ public class MessageDAO {
                 }
             }
         } catch (SQLException e) {
-            logger.error("get all error");
+            logger.error("MessageDAO Exception: get all error");
             logger.error(e);
         }
         return messages;
