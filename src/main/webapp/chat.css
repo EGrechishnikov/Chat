@@ -34,6 +34,10 @@ button {
     color: white;
 }
 
+button:hover {
+    background-color: #404040;
+}
+
 #messages {
     border: 2px #555555 solid;
     border-top-left-radius: 5px;
@@ -148,4 +152,8 @@ header {
     position: fixed;
     bottom: 10px;
     margin-left: 20px;
+}
+
+button, input, textarea {
+    outline: none;
 }
