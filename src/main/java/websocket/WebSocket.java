@@ -78,7 +78,6 @@ public class WebSocket {
                     logger.error("WebSocket Exception: start read messages error");
                     logger.error(e);
                 } finally {
-                    JDBCConnection.close();
                     currentOnlineUsersCount.decrementAndGet();
                     logger.info("WebSocket: stop read messages");
                     logger.info("Current users count: " + currentOnlineUsersCount.get());

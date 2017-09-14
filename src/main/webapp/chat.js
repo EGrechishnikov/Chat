@@ -1,6 +1,6 @@
 var messageHTML = "<div class='wrapper *'><span class='date'>@ от </span>" +
     "<span class='userName'>?</span></div><div class='message text *'>#</div>";
-var socket = new WebSocket("ws://192.168.50.187:8080/chat/connect");
+var socket = new WebSocket("ws://localhost:8080/chat/connect");
 const LOAD_MESSAGES_COMMAND = "***LOAD#MESSAGES***";
 const STOP_CHAT_COMMAND = "***STOP#CHAT***";
 var userName = "";
