@@ -13,7 +13,7 @@ public class JDBCConnection {
     private static Connection connection;
     private static final String url = "jdbc:mysql://localhost:3306/chat?useUnicode=true&characterEncoding=utf8";
     private static final String login = "root";
-    private static final String password = "";
+    private static final String password = "admin";
     private static Logger logger = Logger.getLogger(JDBCConnection.class);
 
     public static Connection getConnection() {
