@@ -7,11 +7,12 @@ import java.util.Date;
 /**
  * Message bean
  */
+@SuppressWarnings("unused")
 public class Message implements Serializable {
-   private int id;
-   private String text;
-   private String sender;
-   private Timestamp date;
+    private int id;
+    private String text;
+    private String sender;
+    private Timestamp date;
 
     public Message() {
     }

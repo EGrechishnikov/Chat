@@ -18,6 +18,11 @@ public class MessageDAO {
     private static Logger logger = Logger.getLogger(MessageDAO.class);
     private Connection connection = JDBCConnection.getConnection();
 
+    /**
+     * Save the message in database
+     * @param message - Message pojo
+     * @return - the messages id in database
+     */
     public int save(Message message) {
         int id = 0;
         try {
@@ -41,6 +46,12 @@ public class MessageDAO {
         return id;
     }
 
+    /**
+     * Get all messages excluded my messages
+     * @param myMessagesId - list of my messages id
+     * @param lastMessagesId - last showed messages id
+     * @return - all another messages
+     */
     public List<Message> getAllWithoutMyMessages(List<Integer> myMessagesId, int lastMessagesId) {
         List<Message> messages = new ArrayList<Message>();
         try {
