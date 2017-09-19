@@ -1,7 +1,6 @@
 package dao;
 
 import bean.Message;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 

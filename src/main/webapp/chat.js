@@ -14,49 +14,49 @@ window.onunload = function () {
     stopChat();
 };
 
-//Начало. Сокрытие ненужных блоков.
+//Start. Hide blocks.
 function start() {
     document.getElementById("chat").style.display = "none";
     document.getElementById("userName").focus();
 }
 
-//Запуск чата
+//Start chat.
 function startChat() {
     userName = document.getElementById("userName").value;
-    if(userName.length !== 0) {
+    if (userName.length !== 0) {
         changeContent();
         loadMessages();
     }
 }
 
-//Закрыть чат
+//Stop chat.
 function stopChat() {
     socket.send(STOP_CHAT_COMMAND);
 }
 
-//Скрытие ввода и показ чата
+//Change content. Hide input and show chat.
 function changeContent() {
     document.getElementById("login").classList.add("hide");
-    setTimeout(function() {
+    setTimeout(function () {
         document.getElementById("login").style.display = "none";
         document.getElementById("chat").style.display = "block";
     }, 1000);
-    setTimeout(function() {
+    setTimeout(function () {
         document.getElementById("chat").classList.add("show");
         document.getElementById("input").focus();
-    },1200);
+    }, 1200);
 }
 
-//Отправка сообщения по нажатию ENTER
+//Send message on press ENTER button.
 document.onkeyup = function (event) {
     if (event.keyCode === 13) {
         sendMessage();
     }
 };
 
-//Обработка ответа от сервера
+//Server response handler.
 socket.onmessage = function (event) {
-    if(event.data.indexOf("Users count:") === 0) {
+    if (event.data.indexOf("Users count:") === 0) {
         changeOnlineUsersCount(event.data.substr(12));
     } else {
         var json = JSON.parse(event.data, function (key, value) {
@@ -71,14 +71,14 @@ socket.onmessage = function (event) {
     }
 };
 
-//Отображение количество пользователей онлайн
+//Print online users amount.
 function changeOnlineUsersCount(count) {
     var text = "Сейчас здесь ";
-    if(count == 0) {
+    if (count == 0) {
         text += ("никого нет.");
-    } else if(count == 1) {
+    } else if (count == 1) {
         text += ("только вы :)");
-    } else if(count > 1 && count < 5) {
+    } else if (count > 1 && count < 5) {
         text += (count + " пользователя.")
     } else {
         text += (count + " пользователей.")
@@ -86,22 +86,22 @@ function changeOnlineUsersCount(count) {
     document.getElementById("usersCount").innerText = text;
 }
 
-//Плавная прокрутка чата к последнему сообщению.
-//Скорость меняется в зависимости от длинны прокрутки.
+//Slow scroll chat to the last message.
+//The speed changes depending on scroll length.
 function scrollMessages() {
     var height = document.getElementById("messages").scrollHeight;
     var currentPosition = document.getElementById("messages").scrollTop;
     var diff = height - messagesBlockHeight - currentPosition;
-    if(diff > 0) {
-        if(diff > 1000) {
+    if (diff > 0) {
+        if (diff > 1000) {
             currentPosition += 5;
-        } else if(diff > 800) {
+        } else if (diff > 800) {
             currentPosition += 4;
-        } else if(diff > 500) {
+        } else if (diff > 500) {
             currentPosition += 3;
-        } else if(diff > 300) {
+        } else if (diff > 300) {
             currentPosition += 2;
-        } else if(diff > 200) {
+        } else if (diff > 200) {
             currentPosition += 1.5;
         } else {
             currentPosition += 1;
@@ -111,7 +111,7 @@ function scrollMessages() {
     }
 }
 
-//Отправить сообщение
+//Send the message.
 function sendMessage() {
     var text = document.getElementById("input").value;
     if (text.length > 0) {
@@ -123,17 +123,17 @@ function sendMessage() {
     scrollMessages();
 }
 
-//Вывод сообщения
+//Print the message.
 function printMessage(message) {
     document.getElementById("messages").innerHTML += message.toString();
 }
 
-//Запрос на загрузку истории сообщений
+//Request to load message story.
 function loadMessages() {
     socket.send(LOAD_MESSAGES_COMMAND);
 }
 
-//Конструктор сообщения
+//Constructor
 function Message(text, sender, date) {
     this.text = text;
     this.sender = sender;
@@ -147,14 +147,14 @@ function Message(text, sender, date) {
     };
 }
 
-//Форматируем дату
+//Date format
 function formatDate(date) {
     return formatNumber(date.getHours()) + ":" + formatNumber(date.getMinutes()) + ":" +
         formatNumber(date.getSeconds()) + " " + formatNumber(date.getDate()) + "." +
         formatNumber(date.getMonth()) + "." + date.getFullYear();
 }
 
-//Формат числа
+//Number format
 function formatNumber(number) {
     return number.toString().length > 1 ? number : "0" + number;
 }
