@@ -23,15 +23,13 @@ public class WebSocket {
     //Logger
     private static Logger logger = Logger.getLogger(WebSocket.class);
     //Message reading timeout
-    private static final int MESSGE_READING_TIMEOUT = 4000;
+    private static final int MESSAGE_READING_TIMEOUT = 4000;
     //Commands
     private final static String START_COMMAND = "***LOAD#MESSAGES***";
     private final static String STOP_COMMAND = "***STOP#CHAT***";
-    //Last message id
     private int lastMessageId;
-    private static MessageDAO dao = new MessageDAO();
-    //My messages id
     private List<Integer> myMessagesId = new CopyOnWriteArrayList<Integer>();
+    private static MessageDAO dao = new MessageDAO();
     //Online users count
     private static volatile AtomicInteger currentOnlineUsersCount = new AtomicInteger(0);
     //Flag to stop chat
@@ -67,7 +65,7 @@ public class WebSocket {
     }
 
     /**
-     * Load all message on start chat
+     * Load all messages on start chat
      *
      * @param session - session for sending messages
      * @throws IOException - answer sending exception
@@ -98,7 +96,7 @@ public class WebSocket {
                             lastMessageId = message.getId();
                         }
                         session.getBasicRemote().sendText("Users count:" + currentOnlineUsersCount.get());
-                        Thread.sleep(MESSGE_READING_TIMEOUT);
+                        Thread.sleep(MESSAGE_READING_TIMEOUT);
                     }
                 } catch (Exception e) {
                     logger.error("WebSocket Exception: start read messages error");
