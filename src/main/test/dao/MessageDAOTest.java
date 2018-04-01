@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * DAO test
+ * @author Evgeniy Grechishnikov
  */
 public class MessageDAOTest {
     private static MessageDAO dao = new MessageDAO();

@@ -5,38 +5,38 @@ import org.apache.log4j.Logger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 /**
- * JDBC connection
+ * @author Evgeniy Grechishnikov
  */
 public class JDBCConnection {
     private static Connection connection;
-    private static final String url = "jdbc:mysql://localhost:3306/chat?useUnicode=true&characterEncoding=utf8";
-    private static final String login = "root";
-    private static final String password = "admin";
+    private static ResourceBundle config = ResourceBundle.getBundle("config");
+    private static final String url = config.getString("db.url");
+    private static final String login = config.getString("db.user");
+    private static final String password = config.getString("db.password");
     private static Logger logger = Logger.getLogger(JDBCConnection.class);
 
     public static Connection getConnection() {
         try {
             if (connection == null) {
-                logger.info("Create connection");
                 Class.forName("com.mysql.jdbc.Driver");
+                logger.info("Create connection");
                 connection = DriverManager.getConnection(url, login, password);
             }
         } catch (Exception e) {
-            logger.error("Connection error");
-            logger.error(e);
+            logger.error("Connection error", e);
         }
         return connection;
     }
 
-    public static void close() {
+    public static void closeConnection() {
         try {
             getConnection().close();
             logger.info("DB connection closed");
         } catch (SQLException e) {
-            logger.error("Close connection exception");
-            logger.error(e);
+            logger.error("Connection closeConnection exception", e);
         }
     }
 }

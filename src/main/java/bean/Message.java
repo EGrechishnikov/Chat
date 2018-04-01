@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 /**
- * Message bean
+ * @author Evgeniy Grechishnikov
  */
 @SuppressWarnings("unused")
 public class Message implements Serializable {
